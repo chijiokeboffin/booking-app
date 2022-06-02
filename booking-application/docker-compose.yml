@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  app:
+    image: booking
+    build: ./
+    container_name: booking
+    ports:
+    - "8080:8080"
+    depends_on:
+       db:
+         condition: service_healthy
+
+  db:
+    image: postgres
+    container_name: db
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 1s
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=booking
+    volumes:
+      - ./Database/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
+      - ./Database/trails.sql:/docker-entrypoint-initdb.d/2-trails.sql

@@ -1,0 +1,27 @@
+CREATE TABLE trails(
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) UNIQUE NOT NULL,
+  start_at VARCHAR(10) NOT NULL,
+  end_at VARCHAR(10) NOT NULL,
+  unit_price NUMERIC NOT NULL,
+  min_age INTEGER NOT NULL
+);
+
+CREATE TABLE bookings(
+id SERIAL PRIMARY KEY,
+trail_id INTEGER REFERENCES trails(id),
+amount NUMERIC NOT NULL,
+book_date DATE NOT NULL,
+created_on TIMESTAMP DEFAULT NOW(),
+is_canceled BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+
+
+CREATE TABLE booking_hikers(
+ id SERIAL PRIMARY KEY,
+ booking_id INTEGER REFERENCES bookings(id),
+ first_name VARCHAR(150) NOT NULL,
+ last_name VARCHAR(150) NOT NULL,
+ age INTEGER NOT NULL
+);
